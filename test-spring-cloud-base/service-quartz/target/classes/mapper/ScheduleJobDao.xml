@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.quartz.servicequartz.job.dao.ScheduleJobDao">
+
+
+    <insert id="insert" parameterType="com.quartz.servicequartz.job.entity.ScheduleJobEntity">
+        insert into schedule_job (id,bean_name ,params,cron_expression ,status,remark,creator,
+        create_date ,updater,update_date )
+        value
+         (#{id},#{beanName},#{params},#{cronExpression},#{status},#{remark},#{creator},NOW(),#{updater},NOW())
+    </insert>
+    <update id="updateById" parameterType="com.quartz.servicequartz.job.entity.ScheduleJobEntity">
+        update schedule_job
+        set
+            status = #{status},
+            bean_name=#{beanName},
+            params = #{params},
+            cron_expression= #{cronExpression},
+            remark= #{remark}
+        where id =#{id}
+    </update>
+    <update id="updateBatch">
+        update schedule_job
+        set
+            status = #{status}
+        where id in
+        <foreach collection="ids"  open="(" close=")" index="index" item="item" separator=",">
+            #{item}
+        </foreach>
+    </update>
+    <delete id="deleteBatchIds">
+        delete from schedule_job where id in
+        <foreach collection="idList"  open="(" close=")" index="index" item="item" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+    <select id="selectById" resultType="com.quartz.servicequartz.job.entity.ScheduleJobEntity">
+        select id,bean_name beanName,params,cron_expression cronExpression,status,remark,creator,
+        create_date createDate,updater,update_date updateDate from schedule_job where id = #{id}
+    </select>
+    <select id="selectList" resultType="com.quartz.servicequartz.job.entity.ScheduleJobEntity">
+        select id,bean_name beanName,params,cron_expression cronExpression,status,remark,creator,
+        create_date createDate,updater,update_date updateDate from schedule_job
+    </select>
+</mapper>
