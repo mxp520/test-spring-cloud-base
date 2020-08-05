@@ -1,7 +1,6 @@
 package com.objcat.servicea.controller;
 
 
-import com.lowagie.text.DocumentException;
 import com.objcat.servicea.entity.ChinaMapEntity;
 import com.objcat.servicea.entity.StudentEntity;
 import com.objcat.servicea.utils.CreateWord;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,21 +86,28 @@ public class TestController {
         return studentEntity.toString();
     }
 
-    @RequestMapping("/getWord")
-    public void getWord(HttpServletResponse response) throws DocumentException, IOException {
+    @GetMapping("/getWord")
+    public void getWord(HttpServletResponse response) throws Exception {
         StudentEntity studentEntity1 = new StudentEntity("45011106220021","张三,男","南京市","□视力表 □电脑验光");
         StudentEntity studentEntity2 = new StudentEntity("45011106220022","李四,男","镇江市","□视力表 □电脑验光");
         StudentEntity studentEntity3 = new StudentEntity("45011106220023","王五,男","芜湖市","□视力表 □电脑验光");
         StudentEntity studentEntity4 = new StudentEntity("45011106220024","张飞,男","安庆市","□视力表 □电脑验光");
         StudentEntity studentEntity5 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
+        StudentEntity studentEntity6 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
+        StudentEntity studentEntity7 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
+        StudentEntity studentEntity8 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
+        StudentEntity studentEntity9 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
+        StudentEntity studentEntity10 = new StudentEntity("45011106220025","关羽,男","马鞍山市","□视力表 □电脑验光");
 
         List<StudentEntity> noteList = new ArrayList<StudentEntity>();
         noteList.add(studentEntity1);noteList.add(studentEntity2);noteList.add(studentEntity3);
-        noteList.add(studentEntity4);noteList.add(studentEntity5);
+        noteList.add(studentEntity4);noteList.add(studentEntity5);noteList.add(studentEntity6);
+        noteList.add(studentEntity7);noteList.add(studentEntity8);noteList.add(studentEntity9);
+        noteList.add(studentEntity10);
 
         List<com.lowagie.text.Image> list = ZXingCode.getQRCode(noteList);
-        CreateWord.createDocContext(list,response);
-//        CreateWord.createPDFContext(list,response);
+//        CreateWord.createDocContext(list,response);//生成带有二维码的word
+        CreateWord.createPDFContext(list,response);//生成带有二维码的pdf
     }
 
 }
