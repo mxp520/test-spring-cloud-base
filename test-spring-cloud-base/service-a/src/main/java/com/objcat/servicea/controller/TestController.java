@@ -110,4 +110,11 @@ public class TestController {
         CreateWord.createPDFContext(list,response);//生成带有二维码的pdf
     }
 
+    @GetMapping(value = "/testIntercepter")
+    public String testIntercepter(){
+        return "OK";
+    }
+
+
+
 }
