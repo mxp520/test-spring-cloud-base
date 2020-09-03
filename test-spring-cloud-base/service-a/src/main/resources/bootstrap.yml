@@ -9,6 +9,14 @@ spring:
       discovery:
         enabled: true
         service-id: service-config
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        acknowledge-mode: manual
 eureka:
   client:
     service-url:

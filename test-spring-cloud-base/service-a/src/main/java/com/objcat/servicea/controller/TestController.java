@@ -3,9 +3,11 @@ package com.objcat.servicea.controller;
 
 import com.objcat.servicea.entity.ChinaMapEntity;
 import com.objcat.servicea.entity.StudentEntity;
+import com.objcat.servicea.rabbitMq.RabbitMqProducer;
 import com.objcat.servicea.utils.CreateWord;
 import com.objcat.servicea.utils.TreeUtils;
 import com.objcat.servicea.utils.ZXingCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,6 +25,9 @@ import java.util.List;
 
 @RefreshScope
 public class TestController {
+
+    @Autowired
+    private RabbitMqProducer rabbitMqProducer;
 
     @Value("${server.port}")
     private String port;
@@ -110,8 +116,12 @@ public class TestController {
         CreateWord.createPDFContext(list,response);//生成带有二维码的pdf
     }
 
-    @GetMapping(value = "/testIntercepter")
+    @GetMapping(value = "/testRabbit")
     public String testIntercepter(){
+        StudentEntity studentEntity = new StudentEntity("45011106220021","张三,男","南京市","□视力表 □电脑验光");
+        rabbitMqProducer.send(studentEntity,9);
+        rabbitMqProducer.send(studentEntity,6);
+        System.out.println("发送成功"+new Date());
         return "OK";
     }
 
